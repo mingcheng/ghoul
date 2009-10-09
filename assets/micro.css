@@ -38,6 +38,9 @@ body {
 
 #page #show li:hover {
     background: #eaeaea;
+    opacity: .8;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
 #page #show li .date {
