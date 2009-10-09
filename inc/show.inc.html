@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title><?php echo $_CONFIG['SITE_TITLE'];?></title>
+        <link rel="stylesheet" href="http://a.tbcdn.cn/tbra/2.0/reset-grids.css" type="text/css" media="screen" />
+        <?php // <link rel="stylesheet" href="assets/micro.css" type="text/css" media="screen" /> ?>
+        <style type="text/css"><?php include 'assets/micro-min.css'; ?></style>
+    </head>
+    <body>
+        <div id="page">
+        <h1><?php echo $_CONFIG['SITE_TITLE'];?></h1>
+        <ul id="show">
+        <?php 
+            foreach ($result as $item) {
+                printf('<li id="micro_%d"><span class="date">%s</span><p>%s</p></li>',
+                    $item['id'],
+                    date($_CONFIG['SITE_TIME_FORMAT'], $item['_date']),
+                    nl2br(htmlspecialchars($item['data']))
+                );
+            }
+        ?>
+        </ul>
+        <div id="ver">$Id$</div>
+        </div>
+    </body>
+</html>
