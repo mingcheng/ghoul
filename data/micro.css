@@ -29,6 +29,7 @@ body {
 #page #show {
     overflow: hidden;
     *position: relative;
+    *zoom: 1;
 }
 
 #page #show li {
@@ -36,8 +37,10 @@ body {
     padding: 5px 5px 10px 5px;
     border-top: 1px solid #eaeaea;
     position: relative;
+    *zoom: 1;
 }
 
+#page #show li.hover,
 #page #show li:hover {
     background: #eaeaea;
     opacity: .8;
@@ -85,9 +88,9 @@ body {
     height: 22px;
     overflow: hidden;
     text-indent: -999em;
+    *zoom: 1;
 }
 
-#page #show li.hover .delete,
-#page #show li:hover .delete {
+#page #show li.hover .delete, #page #show li:hover .delete {
     visibility: visible;
 }

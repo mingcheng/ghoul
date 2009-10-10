@@ -45,4 +45,14 @@ window.addEvent('domready', function() {
             req.send();
         }
     });
+
+    if (Browser.Engine.trident) {
+        $$('#show li').addEvent('mouseenter', function(e) {
+            this.addClass('hover');
+        });
+
+        $$('#show li').addEvent('mouseleave', function(e) {
+            this.removeClass('hover');
+        });
+    }
 });
