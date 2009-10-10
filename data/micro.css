@@ -11,12 +11,13 @@ body {
     font-size:14px;
     font-family:"Microsoft YaHei", "YaiHei", "Lucida Grande",Helvetica,Arial,sans-serif;
     color: #333;
-    background: url('http://www.gracecode.com/usr/themes/gracecode/images/bg_plant.jpg') no-repeat top right;
+    background: url('http://bit.ly/16jjW5') no-repeat top right;
 }
 
 #page {
     width: 550px;
-    margin: 0px auto;
+    margin: 0px auto 20px auto;
+    min-height: 400px;
 }
 
 #page h1 {

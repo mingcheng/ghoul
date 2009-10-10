@@ -25,40 +25,47 @@ function do_auth() {
 $_CONFIG = parse_ini_file('data/config.ini');
 
 // 根据 URL 解析控制器
-preg_match('/'.str_replace('/', '\/', $_CONFIG['REQUEST_URI_BASE']).'(\w+)/i', $_SERVER["REQUEST_URI"], $match);
+preg_match('/'.str_replace('/', '\/', $_CONFIG['REQUEST_URI_BASE']).'(\w+)\/*(\d*)\/*/i', $_SERVER["REQUEST_URI"], $match);
 if (empty($match) || !$match[1]) {
     $match[1] = 'show';
 }
+$action = $match[1];
 
-if ($_CONFIG['AUTH_OBTRUSION']) {
+if ($action == 'delete' || $action == 'post' || ($_CONFIG['AUTH_OBTRUSION'] && $match[1] = 'show')) {
     do_auth();
 }
 
-// 链接读取数据库
+if (!is_writeable($_CONFIG['SQLITE_DATABASE'])) {
+    die('Database is not writeable.');
+}
 $Database = new PDO('sqlite:'.$_CONFIG['SQLITE_DATABASE']);
 
-switch($action = $match[1]) {
-    // 显示条目
+if (!$id = intval($_GET['id'])) {
+    $id = intval(isset($match[2]) ? $match[2] : 0);
+}
+
+switch($action) {
     case 'show':
-        $stmt = $Database->prepare("SELECT id, data, _date FROM micro_blog ORDER BY _date DESC");
+        $sql = "SELECT id, data, _date FROM micro_blog ";
+        if ($id) {
+            $sql .= "WHERE id = {$id} ";
+        }
+        $stmt = $Database->prepare($sql.' ORDER BY _date DESC');
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if ($_GET['ajax']) {
             echo json_encode($result);
         } else {
-            include 'inc/show.inc.html';
+            include 'data/show.inc.html';
         }
         break;
     case 'delete':
-        do_auth();
-        $id = intval($_GET['id']);
         if ($id) {
             $result = $Database->exec("DELETE FROM micro_blog WHERE id = {$id}");
             echo json_encode($result);
         }
         break;
     case 'post':
-        do_auth();
         $data = trim($_POST['content']);
         if (!empty($data)) {
             $stmt = $Database->prepare("INSERT INTO micro_blog(data, _date) VALUES (?, ?)");
