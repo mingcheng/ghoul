@@ -13,9 +13,9 @@ window.addEvent('domready', function() {
         if (id) {
             var link = new Element('a', {
                 'rel': id,
-                'title': '删除这条信息',
+                'title': 'Delte this entry',
                 'class': 'delete',
-                'html': '[删除]',
+                'html': '[Del]',
                 'href': ''
             });
             c.appendChild(link);
@@ -24,7 +24,7 @@ window.addEvent('domready', function() {
 
     $('show').addEvent('click', function(e){
         var target = e.target;
-        if (target.hasClass('delete') && target.nodeName.toLowerCase() && target.rel && e.stop() && confirm('您确认删除此条信息吗？')) {
+        if (target.hasClass('delete') && target.nodeName.toLowerCase() && target.rel && e.stop() && confirm('Are you sure, Master?')) {
             var req = new Request({
                 method: 'get', url: 'delete/' + target.rel + '/',
                 onSuccess: function(responseText) {
