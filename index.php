@@ -8,19 +8,6 @@
  * @link   http://www.gracecode.com/
  */
 
-function do_auth() {
-    global $_CONFIG;
-    if (!isset($_SERVER['PHP_AUTH_USER'])) {
-        header('WWW-Authenticate: Basic realm="'.$_CONFIG['SITE_TITLE'].'"');
-        header('HTTP/1.0 401 Unauthorized');
-        exit;
-    } else {
-        if ($_CONFIG['AUTH_PASSWORD'] !== $_SERVER['PHP_AUTH_PW'] || $_CONFIG['AUTH_USERNAME'] !== $_SERVER['PHP_AUTH_USER']) {
-            exit;
-        }
-    }
-}
-
 // 配置项 - 请修改 data/config.ini 文件
 $_CONFIG = parse_ini_file('data/config.ini');
 
@@ -31,7 +18,15 @@ if (empty($match) || !$match[1]) {
 $action = $match[1];
 
 if ($action == 'delete' || $action == 'post' || ($_CONFIG['AUTH_OBTRUSION'] && $match[1] = 'show')) {
-    do_auth();
+    if (!isset($_SERVER['PHP_AUTH_USER'])) {
+        header('WWW-Authenticate: Basic realm="'.$_CONFIG['SITE_TITLE'].'"');
+        header('HTTP/1.0 401 Unauthorized');
+        exit;
+    } else {
+        if ($_CONFIG['AUTH_PASSWORD'] !== $_SERVER['PHP_AUTH_PW'] || $_CONFIG['AUTH_USERNAME'] !== $_SERVER['PHP_AUTH_USER']) {
+            exit;
+        }
+    }
 }
 
 if (!is_writeable($_CONFIG['SQLITE_DATABASE'])) {

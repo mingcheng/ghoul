@@ -15,7 +15,7 @@ function write_params($data, &$db) {
     return $db->lastInsertId() ? true : false;
 }
 
-$data = 'Master, I wanna cannibalize sth, and it\'s can not wait...';
+$data = "Master, it's just beginning...";
 if (write_params($data, $db)) {
-    die('Everything is OK!');
+    die('Everything is OK, pls DELETE install.php.');
 }
