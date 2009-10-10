@@ -27,9 +27,11 @@ Ghoul 为使用 Sqlite 的简单微博客系统
 
 =API=
 
-    本例子中，Ghoul 安装至 http://127.0.0.1/micro_blog/ 那么
+    本例子中，Ghoul 安装至 http://127.0.0.1/micro_blog/，那么定义接口地址如下
 
     ==发送（正确返回最后插入数据库 ID）==
+
+        可以直接使用 http://127.0.0.1/micro_blog/post.html 测试
 
         http://127.0.0.1/micro_blog/post
 
