@@ -24,7 +24,6 @@ function do_auth() {
 // 配置项 - 请修改 data/config.ini 文件
 $_CONFIG = parse_ini_file('data/config.ini');
 
-// 根据 URL 解析控制器
 preg_match('/'.str_replace('/', '\/', $_CONFIG['REQUEST_URI_BASE']).'(\w+)\/*(\d*)\/*/i', $_SERVER["REQUEST_URI"], $match);
 if (empty($match) || !$match[1]) {
     $match[1] = 'show';
@@ -39,6 +38,7 @@ if (!is_writeable($_CONFIG['SQLITE_DATABASE'])) {
     die('Database is not writeable.');
 }
 $Database = new PDO('sqlite:'.$_CONFIG['SQLITE_DATABASE']);
+
 
 if (!$id = intval($_GET['id'])) {
     $id = intval(isset($match[2]) ? $match[2] : 0);
@@ -79,4 +79,10 @@ switch($action) {
         echo 'Request empty!';
 }
 
-$Database = null;
+$plugin = dir("./plugin");
+while (false !== ($entry = $plugin->read())) {
+    if (preg_match('/\.inc\.php$/i', $entry)) {
+        @include_once './plugin/' . $entry;
+    }
+}
+$plugin->close(); $Database = null;
