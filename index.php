@@ -17,7 +17,7 @@ if (empty($match) || !$match[1]) {
 }
 $action = $match[1];
 
-if ($action == 'delete' || $action == 'post' || ($_CONFIG['AUTH_OBTRUSION'] && $match[1] = 'show')) {
+if ($action == 'delete' || $action == 'post' || ($_CONFIG['AUTH_OBTRUSION'] && $action == 'show')) {
     if (!isset($_SERVER['PHP_AUTH_USER'])) {
         header('WWW-Authenticate: Basic realm="'.$_CONFIG['SITE_TITLE'].'"');
         header('HTTP/1.0 401 Unauthorized');
@@ -41,6 +41,8 @@ if (!$id = intval($_GET['id'])) {
 
 switch($action) {
     case 'show':
+        @include_once 'plugin/Creole_Wiki/Creole_Wiki.php';
+
         $sql = "SELECT id, data, _date FROM micro_blog ";
         if ($id) {
             $sql .= "WHERE id = {$id} ";
@@ -51,6 +53,9 @@ switch($action) {
         if ($_GET['ajax']) {
             echo json_encode($result);
         } else {
+            if (class_exists('Creole_Wiki')) {
+                $Creole = new Creole_Wiki;
+            }
             include 'data/show.inc.html';
         }
         break;

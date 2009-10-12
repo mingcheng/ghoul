@@ -18,10 +18,11 @@
         <?php 
             foreach ($result as $item) {
                 printf('<li id="micro_%d"><span
-                    class="date">%s</span><p>%s</p></li>',
+                    class="date">%s</span>%s</li>',
                     $item['id'],
                     date($_CONFIG['SITE_TIME_FORMAT'], $item['_date']),
-                    nl2br(htmlspecialchars($item['data']))
+                    isset($Creole) ? $Creole->transform(trim($item['data'])) : 
+                        '<p>' . nl2br(htmlspecialchars($item['data'])) . '</p>'
                 );
             }
         ?>
