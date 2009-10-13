@@ -9,7 +9,7 @@ header('Content-type: text/html; charset=utf-8');
         <title>Ghoul - <?php echo $_CONFIG['SITE_TITLE'];?></title>
         <link href="?format=rss" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed" />
         <link rel="stylesheet" href="http://a.tbcdn.cn/tbra/2.0/reset-grids.css" type="text/css" media="screen" />
-        <style type="text/css"><?php include 'data/micro.css'; ?></style>
+        <style type="text/css"><?php include 'data/micro-min.css'; ?></style>
     </head>
     <body>
         <div id="page">

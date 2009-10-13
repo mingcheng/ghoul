@@ -76,7 +76,7 @@ window.addEvent('domready', function() {
                         };
                         container.setAttribute('current:page', page);
                     }
-                    // <?php if (IS_LOGIN) { echo "\n buildIcon();"; } echo "\n"; ?>
+                    //! <?php if (IS_LOGIN) { echo "\n buildIcon();"; } echo "\n"; ?>
                     if (len) _loading = false;
                 }
             });
