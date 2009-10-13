@@ -24,19 +24,13 @@ window.addEvent('domready', function() {
             }
         });
     };
-    buildIcon();
+    // <?php if (IS_LOGIN) { echo "\n buildIcon();"; } echo "\n"; ?>
 
     container.addEvent('click', function(e){
         var target = e.target;
         if (target.hasClass('delete') && target.nodeName.toLowerCase() && target.rel && e.stop() && confirm('Are you sure, Master?')) {
             var req = new Request({
                 method: 'get', url: 'delete/' + target.rel + '/',
-                onRequest: function() {
-                    $('loading').setStyle('visibility', 'visible');
-                },
-                onComplete: function() {
-                    $('loading').setStyle('visibility', 'hidden');
-                },
                 onSuccess: function(responseText) {
                     if (responseText == '0') {
                         return;
@@ -64,6 +58,12 @@ window.addEvent('domready', function() {
             var uri = 'show/?format=json&page=' + page;
             var req = new Request({
                 method: 'get', url: uri,
+                onRequest: function() {
+                    $('loading').setStyle('visibility', 'visible');
+                },
+                onComplete: function() {
+                    $('loading').setStyle('visibility', 'hidden');
+                },
                 onSuccess: function(responseText) {
                     if (responseText) {
                         var data = JSON.decode(responseText);
@@ -76,7 +76,7 @@ window.addEvent('domready', function() {
                         };
                         container.setAttribute('current:page', page);
                     }
-                    buildIcon();
+                    // <?php if (IS_LOGIN) { echo "\n buildIcon();"; } echo "\n"; ?>
                     if (len) _loading = false;
                 }
             });

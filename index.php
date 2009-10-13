@@ -57,7 +57,8 @@ switch($action) {
         if ($extra) {
             $sql .= "WHERE id = {$extra} ";
         }
-        $sql .= ' ORDER BY _date DESC';
+        $sql .= ' ORDER BY id DESC';
+        //$sql .= ' ORDER BY _date DESC';
         $sql .= ' LIMIT ' . intval($_CONFIG['PAGE_SIZE']) . ' OFFSET ' . intval(($page - 1) * $_CONFIG['PAGE_SIZE']);
 
         $stmt = $Database->prepare($sql);

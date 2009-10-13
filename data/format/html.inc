@@ -29,8 +29,6 @@ header('Content-type: text/html; charset=utf-8');
         <div id="ver">$Id$</div>
         </div>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.3/mootools-yui-compressed.js"></script>
-        <?php if (IS_LOGIN) { ?>
-            <script type="text/javascript"><?php include 'data/micro.js'; ?></script>
-        <?php } ?>
+        <script type="text/javascript"><?php include DIR_DATA.'/micro.js'; ?></script>
     </body>
 </html>
