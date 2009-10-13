@@ -8,6 +8,10 @@
  * @link   http://www.gracecode.com/
  */
 
+define('IS_LOGIN', $_CONFIG['AUTH_PASSWORD'] === $_SERVER['PHP_AUTH_PW'] && $_CONFIG['AUTH_USERNAME'] === $_SERVER['PHP_AUTH_USER']);
+define('DIR_DATA',   realpath('./data'));
+define('DIR_PLUGIN', realpath('./plugin'));
+
 // 配置项 - 请修改 data/config.ini 文件
 $_CONFIG = parse_ini_file('data/config.ini');
 
@@ -35,33 +39,47 @@ if (!is_writeable($_CONFIG['SQLITE_DATABASE'])) {
 $Database = new PDO('sqlite:'.$_CONFIG['SQLITE_DATABASE']);
 
 
-if (!$id = intval($_GET['id'])) {
-    $id = intval(isset($match[2]) ? $match[2] : 0);
+if (!$extra = intval($_GET['id'])) {
+    $extra = intval(isset($match[2]) ? $match[2] : 0);
 }
 
 switch($action) {
     case 'show':
-        @include_once 'plugin/Creole_Wiki/Creole_Wiki.php';
+        preg_match('/^(\w+)$/', $_GET['format'], $format);
+        if (!strlen($format = $format[1])) {
+            $format = $_CONFIG['DEFAULT_FORMAT'];
+        }
+
+        preg_match('/^(\d+)$/', $_GET['page'], $page);
+        if (!$page = $page[1]) { $page = 1; }
 
         $sql = "SELECT id, data, _date FROM micro_blog ";
-        if ($id) {
-            $sql .= "WHERE id = {$id} ";
+        if ($extra) {
+            $sql .= "WHERE id = {$extra} ";
         }
-        $stmt = $Database->prepare($sql.' ORDER BY _date DESC');
+        $sql .= ' ORDER BY _date DESC';
+        $sql .= ' LIMIT ' . intval($_CONFIG['PAGE_SIZE']) . ' OFFSET ' . intval(($page - 1) * $_CONFIG['PAGE_SIZE']);
+
+        $stmt = $Database->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        if ($_GET['ajax']) {
-            echo json_encode($result);
-        } else {
-            if (class_exists('Creole_Wiki')) {
-                $Creole = new Creole_Wiki;
-            }
-            include 'data/show.inc.html';
+
+        // Creole_Wiki
+        @include_once 'plugin/Creole_Wiki/Creole_Wiki.php';
+        if (class_exists('Creole_Wiki')) {
+            $Creole = new Creole_Wiki;
         }
+
+        foreach ($result as $k => $item) {
+            $result[$k]['data'] = isset($Creole) ? 
+                $Creole->transform(trim($item['data'])) : '<p>'.nl2br(htmlspecialchars($item['data'])).'</p>';
+            $result[$k]['date'] = date($_CONFIG['SITE_TIME_FORMAT'], $item['_date']);
+        }
+        include DIR_DATA.'/format/'.$format.'.inc';
         break;
     case 'delete':
-        if ($id) {
-            $result = $Database->exec("DELETE FROM micro_blog WHERE id = {$id}");
+        if ($extra) {
+            $result = $Database->exec("DELETE FROM micro_blog WHERE id = {$extra}");
             echo json_encode($result);
         }
         break;

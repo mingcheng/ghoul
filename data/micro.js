@@ -8,25 +8,35 @@
  */
 
 window.addEvent('domready', function() {
-    $each($('show').getElementsByTagName('li'), function(c){
-        var id = c.id.match(/^micro_(\d+)$/)[1] || false;
-        if (id) {
-            var link = new Element('a', {
-                'rel': id,
-                'title': 'Delte this entry',
-                'class': 'delete',
-                'html': '[Del]',
-                'href': ''
-            });
-            c.appendChild(link);
-        }
-    });
+    var container = $('show');
+    var buildIcon = function () {
+        $each(container.getElementsByTagName('li'), function(c){
+            var id = c.id.match(/^micro_(\d+)$/)[1] || false;
+            if (id && !c.getElementsByTagName('a').length) {
+                var link = new Element('a', {
+                    'rel': id,
+                    'title': 'Delte this entry',
+                    'class': 'delete',
+                    'html': '[Del]',
+                    'href': ''
+                });
+                c.appendChild(link);
+            }
+        });
+    };
+    buildIcon();
 
-    $('show').addEvent('click', function(e){
+    container.addEvent('click', function(e){
         var target = e.target;
         if (target.hasClass('delete') && target.nodeName.toLowerCase() && target.rel && e.stop() && confirm('Are you sure, Master?')) {
             var req = new Request({
                 method: 'get', url: 'delete/' + target.rel + '/',
+                onRequest: function() {
+                    $('loading').setStyle('visibility', 'visible');
+                },
+                onComplete: function() {
+                    $('loading').setStyle('visibility', 'hidden');
+                },
                 onSuccess: function(responseText) {
                     if (responseText == '0') {
                         return;
@@ -36,7 +46,7 @@ window.addEvent('domready', function() {
                     var effect = new Fx.Morph(el, {duration: 'long', 
                         transition: Fx.Transitions.Sine.easeOut,
                         onComplete: function() {
-                            $('show').removeChild(el);
+                            container.removeChild(el);
                         }
                     });
                     effect.start({'opacity': 0});
@@ -45,6 +55,39 @@ window.addEvent('domready', function() {
             req.send();
         }
     });
+
+    var _loading = false;
+    $(window).addEvent('scroll', function(e){
+        if (_loading) return;
+        if (document.getSize().y + document.getScroll().y >= document.getScrollSize().y) {
+            var page = parseInt(container.getAttribute('current:page'), 10) + 1;
+            var uri = 'show/?format=json&page=' + page;
+            var req = new Request({
+                method: 'get', url: uri,
+                onSuccess: function(responseText) {
+                    if (responseText) {
+                        var data = JSON.decode(responseText);
+                        for (var i = 0, len = data.length; i < len; i++) {
+                            var item = new Element('li', {
+                                'id': 'micro_' + data[i]['id'],
+                                'html': '<span class="date">'+data[i]['date']+'</span>'+data[i]['data']
+                            });
+                            container.appendChild(item);
+                        };
+                        container.setAttribute('current:page', page);
+                    }
+                    buildIcon();
+                    if (len) _loading = false;
+                }
+            });
+            _loading = true; req.send();
+        }
+    });
+
+    $(document.body).appendChild(new Element('div', {
+        'id': 'loading',
+        'html': 'Loading...'
+    }));
 
     if (Browser.Engine.trident) {
         $$('#show li').addEvent('mouseenter', function(e) {

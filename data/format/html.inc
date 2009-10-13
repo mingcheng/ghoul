@@ -9,18 +9,18 @@ header('Content-type: text/html; charset=utf-8');
         <title>Ghoul - <?php echo $_CONFIG['SITE_TITLE'];?></title>
         <link href="?format=rss" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed" />
         <link rel="stylesheet" href="http://a.tbcdn.cn/tbra/2.0/reset-grids.css" type="text/css" media="screen" />
-        <style type="text/css"><?php include 'data/micro-min.css'; ?></style>
+        <style type="text/css"><?php include 'data/micro.css'; ?></style>
     </head>
     <body>
         <div id="page">
         <h1><?php echo $_CONFIG['SITE_TITLE'];?></h1>
-        <ul id="show">
+        <ul id="show" current:page="<?php echo $page; ?>">
         <?php 
             foreach ($result as $item) {
                 printf('<li id="micro_%d"><span
                     class="date">%s</span>%s</li>',
                     $item['id'],
-                    date($_CONFIG['SITE_TIME_FORMAT'], $item['_date']),
+                    $item['date'],
                     $item['data']
                 );
             }
@@ -30,7 +30,7 @@ header('Content-type: text/html; charset=utf-8');
         </div>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/mootools/1.2.3/mootools-yui-compressed.js"></script>
         <?php if (IS_LOGIN) { ?>
-            <script type="text/javascript"><?php include 'data/micro-min.js'; ?></script>
+            <script type="text/javascript"><?php include 'data/micro.js'; ?></script>
         <?php } ?>
     </body>
 </html>

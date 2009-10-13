@@ -1,4 +1,5 @@
 <?php
+set_time_limit(0);
 header('Content-type: text/plain');
 
 $_CONFIG = parse_ini_file('data/config.ini');
@@ -16,6 +17,13 @@ function write_params($data, &$db) {
 }
 
 $data = "Master, it's just beginning...";
+
+/*
+for ($i = 0; $i < 100; $i++) {
+    write_params($i . ": Master, it's just beginning...", $db);
+}
+ */
+
 if (write_params($data, $db)) {
     die('Everything is OK, pls DELETE install.php.');
 }
