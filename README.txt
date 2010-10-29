@@ -1,67 +1,67 @@
 Ghoul - Simple MiniBlog
 
-Ghoul ÎªÊ¹ÓÃ Sqlite µÄ¼òµ¥Î¢²©¿ÍÏµÍ³
+Ghoul ä¸ºä½¿ç”¨ Sqlite çš„ç®€å•å¾®åšå®¢ç³»ç»Ÿ
 
-=ÌØÐÔ=
+=ç‰¹æ€§=
 
-    1¡¢Ê¹ÓÃ HTTP ÑéÖ¤
-    2¡¢×Ô¶¨ÒåÅäÖÃÎÄ¼þ£¨data/config.ini£©
-    3¡¢·½±ãÍâ²¿ API µ÷ÓÃ
-    4¡¢Ê¹ÓÃ Apache ÖØÐ´ URL ÓÑºÃ
-    5¡¢¾ßÓÐ²å¼þÏµÍ³£¬¿ÉÒÔÍ¬²½·¢ËÍÖÁÆäËûÎ¢²©¿ÍÏµÍ³ 
-
-
-=ÏµÍ³ÐèÇó=
-
-    1¡¢PHP5 ÒÔÉÏ£¬ÐèÒª PDO_Sqlite Ö§³Ö
-    2¡¢Apache Ö§³Ö .htaccess ÎÄ¼þÒÔ¼°´ò¿ª mod_rewrite Ä£¿é
+    1ã€ä½¿ç”¨ HTTP éªŒè¯
+    2ã€è‡ªå®šä¹‰é…ç½®æ–‡ä»¶ï¼ˆdata/config.iniï¼‰
+    3ã€æ–¹ä¾¿å¤–éƒ¨ API è°ƒç”¨
+    4ã€ä½¿ç”¨ Apache é‡å†™ URL å‹å¥½
+    5ã€å…·æœ‰æ’ä»¶ç³»ç»Ÿï¼Œå¯ä»¥åŒæ­¥å‘é€è‡³å…¶ä»–å¾®åšå®¢ç³»ç»Ÿ 
 
 
-=°²×°=
+=ç³»ç»Ÿéœ€æ±‚=
 
-    1¡¢½«°²×°°ü½âÑ¹ËõÖÁÄ³ Apache ¿É·ÃÎÊÂ·¾¶
-    2¡¢¸ù¾Ý×ÔÉíÇé¿ö£¬±à¼­ data/config.ini ÅäÖÃÎÄ¼þ
-    3¡¢ÔÚ *ix ÖÐ£¬½« data Ä¿Â¼ÉèÖÃÎª 777
-    4¡¢ÔËÐÐ install.php £¬ÔËÐÐÎÞÎóºóÇëÎñ±ØÉ¾³ý
+    1ã€PHP5 ä»¥ä¸Šï¼Œéœ€è¦ PDO_Sqlite æ”¯æŒ
+    2ã€Apache æ”¯æŒ .htaccess æ–‡ä»¶ä»¥åŠæ‰“å¼€ mod_rewrite æ¨¡å—
+
+
+=å®‰è£…=
+
+    1ã€å°†å®‰è£…åŒ…è§£åŽ‹ç¼©è‡³æŸ Apache å¯è®¿é—®è·¯å¾„
+    2ã€æ ¹æ®è‡ªèº«æƒ…å†µï¼Œç¼–è¾‘ data/config.ini é…ç½®æ–‡ä»¶
+    3ã€åœ¨ *ix ä¸­ï¼Œå°† data ç›®å½•è®¾ç½®ä¸º 777
+    4ã€è¿è¡Œ install.php ï¼Œè¿è¡Œæ— è¯¯åŽè¯·åŠ¡å¿…åˆ é™¤
 
 
 =API=
 
-    ±¾Àý×ÓÖÐ£¬Ghoul °²×°ÖÁ http://127.0.0.1/micro_blog/£¬ÄÇÃ´¶¨Òå½Ó¿ÚµØÖ·ÈçÏÂ
+    æœ¬ä¾‹å­ä¸­ï¼ŒGhoul å®‰è£…è‡³ http://127.0.0.1/micro_blog/ï¼Œé‚£ä¹ˆå®šä¹‰æŽ¥å£åœ°å€å¦‚ä¸‹
 
-    ==·¢ËÍ£¨ÕýÈ··µ»Ø×îºó²åÈëÊý¾Ý¿â ID£©==
+    ==å‘é€ï¼ˆæ­£ç¡®è¿”å›žæœ€åŽæ’å…¥æ•°æ®åº“ IDï¼‰==
 
-        ¿ÉÒÔÖ±½ÓÊ¹ÓÃ http://127.0.0.1/micro_blog/post.html ²âÊÔ
+        å¯ä»¥ç›´æŽ¥ä½¿ç”¨ http://127.0.0.1/micro_blog/post.html æµ‹è¯•
 
         http://127.0.0.1/micro_blog/post
 
-        ²ÎÊý£ºcontent ·¢ËÍÄÚÈÝ
-        ÑéÖ¤£ºÐèÒª HTTP ÑéÖ¤
+        å‚æ•°ï¼šcontent å‘é€å†…å®¹
+        éªŒè¯ï¼šéœ€è¦ HTTP éªŒè¯
 
-    ==»ñÈ¡£¨JSON ¸ñÊ½£©==
+    ==èŽ·å–ï¼ˆJSON æ ¼å¼ï¼‰==
 
-        ===ËùÓÐÌõÄ¿===
+        ===æ‰€æœ‰æ¡ç›®===
 
             http://127.0.0.1/micro_blog/show/?ajax=true
 
-        ===Ö¸¶¨ ID µÄÌõÄ¿===
+        ===æŒ‡å®š ID çš„æ¡ç›®===
 
             http://127.0.0.1/micro_blog/show/[id]/?ajax=true
 
-            ×¢£ºÔÚ data/config.ini ÖÐÅäÖÃÁË AUTH_OBTRUSION = true Ê±£¬ÐèÒª HTTP ÑéÖ¤
+            æ³¨ï¼šåœ¨ data/config.ini ä¸­é…ç½®äº† AUTH_OBTRUSION = true æ—¶ï¼Œéœ€è¦ HTTP éªŒè¯
 
-    ==É¾³ý£¨ÕýÈ··µ»Ø×îºó²åÈëÊý¾Ý¿â ID£©==
+    ==åˆ é™¤ï¼ˆæ­£ç¡®è¿”å›žæœ€åŽæ’å…¥æ•°æ®åº“ IDï¼‰==
 
         http://127.0.0.1/micro_blog/delete/[id]/
 
-        »òÕß
+        æˆ–è€…
 
         http://127.0.0.1/micro_blog/delete?id=[id]
 
-        ÑéÖ¤£ºÐèÒª HTTP ÑéÖ¤
+        éªŒè¯ï¼šéœ€è¦ HTTP éªŒè¯
 
 
-=ÁªÏµ·½Ê½=
+=è”ç³»æ–¹å¼=
 
     mingcheng<i.feelinglucky[at]gmail.com>
     Blog: http://www.gracecode.com/
