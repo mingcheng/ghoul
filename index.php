@@ -8,14 +8,18 @@
  * @link   http://www.gracecode.com/
  */
 
-define('IS_LOGIN', $_CONFIG['AUTH_PASSWORD'] === $_SERVER['PHP_AUTH_PW'] && $_CONFIG['AUTH_USERNAME'] === $_SERVER['PHP_AUTH_USER']);
 define('DIR_DATA',   realpath('./data'));
 define('DIR_PLUGIN', realpath('./plugin'));
 
 // 配置项 - 请修改 data/config.ini 文件
 $_CONFIG = parse_ini_file('data/config.ini');
 
-preg_match('/'.str_replace('/', '\/', $_CONFIG['REQUEST_URI_BASE']).'(\w+)\/*(\d*)\/*/i', $_SERVER["REQUEST_URI"], $match);
+define('IS_LOGIN', 
+    $_CONFIG['AUTH_PASSWORD'] === $_SERVER['PHP_AUTH_PW'] && 
+    $_CONFIG['AUTH_USERNAME'] === $_SERVER['PHP_AUTH_USER']);
+
+preg_match('/'.str_replace('/', '\/', 
+    $_CONFIG['REQUEST_URI_BASE']).'(\w+)\/*(\d*)\/*/i', $_SERVER["REQUEST_URI"], $match);
 if (empty($match) || !$match[1]) {
     $match[1] = 'show';
 }
@@ -27,7 +31,8 @@ if ($action == 'delete' || $action == 'post' || ($_CONFIG['AUTH_OBTRUSION'] && $
         header('HTTP/1.0 401 Unauthorized');
         exit;
     } else {
-        if ($_CONFIG['AUTH_PASSWORD'] !== $_SERVER['PHP_AUTH_PW'] || $_CONFIG['AUTH_USERNAME'] !== $_SERVER['PHP_AUTH_USER']) {
+        if ($_CONFIG['AUTH_PASSWORD'] !== $_SERVER['PHP_AUTH_PW'] || 
+            $_CONFIG['AUTH_USERNAME'] !== $_SERVER['PHP_AUTH_USER']) {
             exit;
         }
     }
@@ -39,7 +44,7 @@ if (!is_writeable($_CONFIG['SQLITE_DATABASE'])) {
 $Database = new PDO('sqlite:'.$_CONFIG['SQLITE_DATABASE']);
 
 
-if (!$extra = intval($_GET['id'])) {
+if (isset($_GET['id']) && !$extra = intval($_GET['id'])) {
     $extra = intval(isset($match[2]) ? $match[2] : 0);
 }
 
@@ -54,7 +59,7 @@ switch($action) {
         if (!$page = $page[1]) { $page = 1; }
 
         $sql = "SELECT id, data, _date FROM micro_blog ";
-        if ($extra) {
+        if (isset($extra) && $extra) {
             $sql .= "WHERE id = {$extra} ";
         }
         $sql .= ' ORDER BY _date DESC';
@@ -78,7 +83,7 @@ switch($action) {
         include DIR_DATA.'/format/'.$format.'.inc';
         break;
     case 'delete':
-        if ($extra) {
+        if (isset($extra) && $extra) {
             $result = $Database->exec("DELETE FROM micro_blog WHERE id = {$extra}");
             echo json_encode($result);
         }
